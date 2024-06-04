@@ -23,10 +23,10 @@ typedef struct FlightNode
 
 //funtion prototypes
 FlightNode* createNode(char* destination, char* date, float fare);
-void insertByFare(FlightNode **head, FlightNode **tail, FlightNode* newNode);
-void insertByDestination(FlightNode ** head, FlightNode ** tail, FlightNode * newNode);
+void insertByFare(FlightNode** head, FlightNode** tail, FlightNode* newNode);
+void insertByDestination(FlightNode** head, FlightNode** tail, FlightNode* newNode);
 FlightNode* findFlight(FlightNode* head, char* destination, char* date);
-void deleteNode(FlightNode *node, FlightNode **head, FlightNode** tail);
+void deleteNode(FlightNode* node, FlightNode** head, FlightNode** tail);
 void displayListByFare(FlightNode* head);
 void displayListByDestination(FlightNode* head);
 void freeList(FlightNode* head);
@@ -91,7 +91,7 @@ int main()
 	fgets(date, sizeof(date), stdin);
 	date[strcspn(date, "\n")] = '\0';
 
-	FlightNode *foundFlight = findFlight(destHead, destination, date);
+	FlightNode* foundFlight = findFlight(destHead, destination, date);
 	if (foundFlight)
 	{
 		printf("Fare for the flight is: %.2f\n", foundFlight->fare);
@@ -100,7 +100,7 @@ int main()
 		fgets(input, sizeof(input), stdin);
 		sscanf_s(input, "%f", &fare);
 
-		if( fare!= foundFlight->fare)
+		if (fare != foundFlight->fare)
 		{
 			foundFlight->fare = fare;
 			deleteNode(foundFlight, &fareHead, &fareTail);
@@ -112,26 +112,26 @@ int main()
 			printf("Fare is unchanged.\n");
 		}
 	}
- else
- {
-	//print if flight is not found
-	printf("Flight not found.\n");
- }
+	else
+	{
+		//print if flight is not found
+		printf("Flight not found.\n");
+	}
 
- //displaying updated flights sorted by fare
- printf("\nUpdated flights sorted by fare:\n");
- displayListByFare(fareHead);
+	//displaying updated flights sorted by fare
+	printf("\nUpdated flights sorted by fare:\n");
+	displayListByFare(fareHead);
 
- //displaying updated flights soreted by destination
- printf("\nUpdated flights sorted by destination:\n");
- displayListByDestination(destHead);
+	//displaying updated flights soreted by destination
+	printf("\nUpdated flights sorted by destination:\n");
+	displayListByDestination(destHead);
 
- freeList(fareHead);
+	freeList(fareHead);
 
- return 0;
+	return 0;
 }
 
-/*  
+/*
 Function: createNode()
 Parameter:
 char* destination: pointer to a C-style string containing the destination of the flight.
@@ -139,7 +139,7 @@ char* date: pointer to a C-style string containing the date of the flight.
 float fare: fare of the flight.
 Return Value:
 FlightNode pointer: pointer to the newly created FlightNode struct.
-Description: This function creates a new FlightNode struct and initializes its fields with the provided information. 
+Description: This function creates a new FlightNode struct and initializes its fields with the provided information.
 */
 FlightNode* createNode(char* destination, char* date, float fare)
 {
@@ -156,7 +156,7 @@ FlightNode* createNode(char* destination, char* date, float fare)
 		fprintf(stderr, "Memory allocation failed\n");
 		exit(EXIT_FAILURE);
 	}
-	strcpy_s(newNode->destination, strlen(destination) + 1,destination);
+	strcpy_s(newNode->destination, strlen(destination) + 1, destination);
 
 	newNode->date = (char*)malloc((strlen(date) + 1) * sizeof(char));
 	if (!newNode->date)
@@ -164,7 +164,7 @@ FlightNode* createNode(char* destination, char* date, float fare)
 		fprintf(stderr, "Memory allocation failed\n");
 		exit(EXIT_FAILURE);
 	}
-	strcpy_s(newNode->date, strlen(date) + 1,date);
+	strcpy_s(newNode->date, strlen(date) + 1, date);
 
 	newNode->fare = fare;
 	newNode->prevFare = NULL;
@@ -183,7 +183,7 @@ FlightNode *newNode: pointer to the new flight to be inserted.
 Return Value: void
 Description: This function inserts a new flight into the linked list sorted by fare.
 */
-void insertByFare(FlightNode **head, FlightNode **tail, FlightNode *newNode)
+void insertByFare(FlightNode** head, FlightNode** tail, FlightNode* newNode)
 {
 	FlightNode* current = *head;
 
@@ -288,7 +288,7 @@ FlightNode* findFlight(FlightNode* head, char* destination, char* date)
 }
 
 /*
-Function: deleteNode() 
+Function: deleteNode()
 Parameter:
 FlightNode* node: pointer to the node to be deleted.
 FlightNode** head: double pointer to the head of the linked list.
@@ -365,16 +365,16 @@ void displayListByDestination(FlightNode* head)
  Return Value: void
  Description: This function frees the memory allocated for the linked list.
  */
-void freeList(FlightNode * head)
+void freeList(FlightNode* head)
 {
-		FlightNode* temp;
-		while (head)
-		{
-			temp = head;
-			head = head->nextFare;
-			//free up everything
-			free(temp->destination);
-			free(temp->date);
-			free(temp);
-		}
+	FlightNode* temp;
+	while (head)
+	{
+		temp = head;
+		head = head->nextFare;
+		//free up everything
+		free(temp->destination);
+		free(temp->date);
+		free(temp);
+	}
 }
